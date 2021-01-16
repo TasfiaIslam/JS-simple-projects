@@ -41,6 +41,12 @@ class UI {
 
     list.appendChild(row);
   }
+
+  static clearFields() {
+    document.querySelector("#title").value = "";
+    document.querySelector("#description").value = "";
+    document.querySelector("#rating").value = "";
+  }
 }
 
 // Store Class: Handles storage
@@ -49,5 +55,23 @@ class UI {
 document.addEventListener("DOMContentLoaded", UI.displayMovies);
 
 // Event: Add a movie
+document.querySelector("#movie-form").addEventListener("submit", (e) => {
+  // Prevent actual submit
+  e.preventDefault();
+
+  // Get form values
+  const title = document.querySelector("#title").value;
+  const description = document.querySelector("#description").value;
+  const rating = document.querySelector("#rating").value;
+
+  // Instantiate Movie
+  const movie = new Movie(title, description, rating);
+
+  // Add movie to UI
+  UI.addMovieToList(movie);
+
+  // Clear fields
+  UI.clearFields();
+});
 
 // Event: Remove a movie
