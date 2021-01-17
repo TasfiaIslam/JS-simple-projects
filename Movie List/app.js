@@ -47,6 +47,10 @@ class UI {
     }
   }
 
+  static showAlert(message, className) {
+    const div = document.createElement("div");
+  }
+
   static clearFields() {
     document.querySelector("#title").value = "";
     document.querySelector("#description").value = "";
@@ -69,14 +73,19 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
   const description = document.querySelector("#description").value;
   const rating = document.querySelector("#rating").value;
 
-  // Instantiate Movie
-  const movie = new Movie(title, description, rating);
+  // Validate
+  if (title === "" || description === "" || rating === "") {
+    alert("Please fill in all fields");
+  } else {
+    // Instantiate Movie
+    const movie = new Movie(title, description, rating);
 
-  // Add movie to UI
-  UI.addMovieToList(movie);
+    // Add movie to UI
+    UI.addMovieToList(movie);
 
-  // Clear fields
-  UI.clearFields();
+    // Clear fields
+    UI.clearFields();
+  }
 });
 
 // Event: Remove a movie
