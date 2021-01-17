@@ -36,10 +36,15 @@ class UI {
         <td>${movie.title}</td>
         <td>${movie.description}</td>
         <td>${movie.rating}</td>
-        <td><a href="" class="btn btn-danger btn-sm delete">X</a></td>
+        <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
     `;
 
     list.appendChild(row);
+  }
+  static deleteMovie(el) {
+    if (el.classList.contains("delete")) {
+      el.parentElement.parentElement.remove();
+    }
   }
 
   static clearFields() {
@@ -75,3 +80,6 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
 });
 
 // Event: Remove a movie
+document.querySelector("#movie-list").addEventListener("click", (e) => {
+  UI.deleteMovie(e.target);
+});
