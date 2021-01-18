@@ -91,6 +91,9 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
     // Add movie to UI
     UI.addMovieToList(movie);
 
+    // Show success message
+    UI.showAlert("Movie added", "success");
+
     // Clear fields
     UI.clearFields();
   }
@@ -99,4 +102,7 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
 // Event: Remove a movie
 document.querySelector("#movie-list").addEventListener("click", (e) => {
   UI.deleteMovie(e.target);
+
+  // Show success message
+  UI.showAlert("Movie removed", "success");
 });
