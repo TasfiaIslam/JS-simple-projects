@@ -49,6 +49,14 @@ class UI {
 
   static showAlert(message, className) {
     const div = document.createElement("div");
+    div.className = `alert alert-${className}`;
+    div.appendChild(document.createTextNode(message));
+    const container = document.querySelector(".container");
+    const form = document.querySelector("#movie-form");
+    container.insertBefore(div, form);
+
+    // Vanish in few seconds
+    setTimeout(() => document.querySelector(".alert").remove(), 3000);
   }
 
   static clearFields() {
@@ -75,7 +83,7 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
 
   // Validate
   if (title === "" || description === "" || rating === "") {
-    alert("Please fill in all fields");
+    UI.showAlert("Please fill in all fields", "danger");
   } else {
     // Instantiate Movie
     const movie = new Movie(title, description, rating);
