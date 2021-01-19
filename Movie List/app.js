@@ -1,6 +1,7 @@
 // Movie Class: Represents a movie
 class Movie {
-  constructor(title, description, rating) {
+  constructor(movieId, title, description, rating) {
+    this.movieId = movieId;
     this.title = title;
     this.description = description;
     this.rating = rating;
@@ -10,20 +11,7 @@ class Movie {
 // UI Class: Handles UI tasks
 class UI {
   static displayMovies() {
-    const StoredMovies = [
-      {
-        title: "Movie 1",
-        description: "abcd",
-        rating: "8",
-      },
-      {
-        title: "Movie 2",
-        description: "abcd",
-        rating: "7.5",
-      },
-    ];
-
-    const movies = StoredMovies;
+    const movies = Store.getMovies();
 
     movies.forEach((movie) => UI.addMovieToList(movie));
   }
@@ -33,6 +21,7 @@ class UI {
     const row = document.createElement("tr");
 
     row.innerHTML = `
+        <td>${movie.movieId}</td>
         <td>${movie.title}</td>
         <td>${movie.description}</td>
         <td>${movie.rating}</td>
@@ -60,6 +49,7 @@ class UI {
   }
 
   static clearFields() {
+    document.querySelector("#movieId").value = "";
     document.querySelector("#title").value = "";
     document.querySelector("#description").value = "";
     document.querySelector("#rating").value = "";
@@ -67,6 +57,35 @@ class UI {
 }
 
 // Store Class: Handles storage
+class Store {
+  static getMovies() {
+    let movies;
+    if (localStorage.getItem("movies") === null) {
+      movies = [];
+    } else {
+      movies = JSON.parse(localStorage.getItem("movies"));
+    }
+    return movies;
+  }
+
+  static addMovie(movie) {
+    const movies = Store.getMovies();
+    books.push(movie);
+    localStorage.setItem("movies", JSON.stringify(movies));
+  }
+
+  static removeMovie(id) {
+    const movies = Store.getMovies();
+
+    movies.forEach((movie, index) => {
+      if (movie.movieId === movieId) {
+        movies.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem("movies", JSON.stringify(movies));
+  }
+}
 
 // Events: Display movies
 document.addEventListener("DOMContentLoaded", UI.displayMovies);
@@ -77,19 +96,23 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
   e.preventDefault();
 
   // Get form values
+  const movieId = document.querySelector("#movieId").value;
   const title = document.querySelector("#title").value;
   const description = document.querySelector("#description").value;
   const rating = document.querySelector("#rating").value;
 
   // Validate
-  if (title === "" || description === "" || rating === "") {
+  if (movieId === "" || title === "" || description === "" || rating === "") {
     UI.showAlert("Please fill in all fields", "danger");
   } else {
     // Instantiate Movie
-    const movie = new Movie(title, description, rating);
+    const movie = new Movie(movieId, title, description, rating);
 
     // Add movie to UI
     UI.addMovieToList(movie);
+
+    // Add movie to store
+    Store.addMovie(movie);
 
     // Show success message
     UI.showAlert("Movie added", "success");
