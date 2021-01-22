@@ -20,11 +20,11 @@ class UI {
     const list = document.querySelector("#movie-list");
     const row = document.createElement("tr");
 
-    row.innerHTML = `
-        <td>${movie.movieId}</td>
+    row.innerHTML = `      
         <td>${movie.title}</td>
         <td>${movie.description}</td>
         <td>${movie.rating}</td>
+        <td>${movie.movieId}</td>
         <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
     `;
 
@@ -70,11 +70,11 @@ class Store {
 
   static addMovie(movie) {
     const movies = Store.getMovies();
-    books.push(movie);
+    movies.push(movie);
     localStorage.setItem("movies", JSON.stringify(movies));
   }
 
-  static removeMovie(id) {
+  static removeMovie(movieId) {
     const movies = Store.getMovies();
 
     movies.forEach((movie, index) => {
@@ -124,7 +124,11 @@ document.querySelector("#movie-form").addEventListener("submit", (e) => {
 
 // Event: Remove a movie
 document.querySelector("#movie-list").addEventListener("click", (e) => {
+  // Remove a movie from UI
   UI.deleteMovie(e.target);
+
+  // Remove a movie from Store
+  Store.removeMovie(e.target.parentElement.previousElementSibling.textContent);
 
   // Show success message
   UI.showAlert("Movie removed", "success");
